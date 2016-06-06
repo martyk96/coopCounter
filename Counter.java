@@ -33,6 +33,8 @@ public class Counter {
 			sec--;
 		}
 	
+	public short getSecond(){return sec;}
+	
 	//the purpose of the following function is to increase or decrease our minutes by 1
 	public void incMinute(){
 		if (min==59){
@@ -50,6 +52,7 @@ public class Counter {
 		else
 			min--;
 	}
+	public short getMinute(){return min;}
 	
 	//the purpose of the following functions is to increase or decrease our hours by 1
 	public void incHour(){
@@ -66,6 +69,7 @@ public class Counter {
 		else
 			hour--;
 	}
+	public short getHour(){return hour;}
 	
 	//the purpose of the following functions is to reset the counter
 	public void reset(){
