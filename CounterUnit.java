@@ -9,18 +9,7 @@ import org.junit.Test;
 
 
 public class CounterUnit {
-	
-	//short[] minSecTest = new short[]{0,30,59};
-	//short[] hourTest = new short[]{0,15,23};
-	
 	Counter testCounter;
-	//int o = hourTest.length;
-	
-	for(int i=0; i < hourTest.length; i++){
-		// testCounter = new Counter(minSecTest[i], minSecTest[i], hourTest[i]);
-	}
-
-	//need to create an array testing different values
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
@@ -32,6 +21,18 @@ public class CounterUnit {
 
 	@Before
 	public void setUp() throws Exception {
+		//this will test all possible values
+		for(short hour=0; hour < 24; hour++){
+			for(short min=0; min<60; min++){
+				for(short sec=0; sec<60; sec++){
+					testCounter = new Counter(sec, min, hour);
+					System.out.println(testCounter.getTime(true));
+				}
+			}
+				
+		}
+		
+
 	}
 
 	@After
@@ -48,7 +49,7 @@ public class CounterUnit {
 		testCounter.incSecond();
 		secAfter = testCounter.getSecond();
 		
-		if(secBefore!=59)
+		if(secBefore<59)
 			assertEquals(secBefore,secAfter-1);	//seconds before should equal minutes -1
 		else{
 			assertEquals(secAfter,0);			//if seconds is 59, seconds should reset to 0
@@ -78,7 +79,7 @@ public class CounterUnit {
 		testCounter.incMinute();
 		minAfter = testCounter.getMinute();
 		
-		if(minBefore!=59)
+		if(minBefore<59)
 			assertEquals(minBefore,minAfter-1);	//minute before should equal minute after -1
 		else{
 			assertEquals(minAfter,0);			//if minutes is 59, minutes should reset to 0
@@ -108,7 +109,7 @@ public class CounterUnit {
 		testCounter.incHour();
 		hourAfter = testCounter.getHour();
 		
-		if(hourBefore!=23)
+		if(hourBefore < 23)
 			assertEquals(hourBefore, hourAfter-1);	//hour before should equal hour after -1
 		else{
 			assertEquals(hourAfter,0);			//if hours is 23, hours should reset to 0 
@@ -128,5 +129,16 @@ public class CounterUnit {
 			assertEquals(hourAfter, 23);		//if hours is 0, hours should roll back to 23
 		}
 	}
+	
+	@After
+	public void secMinHourShouldBeZero(){
+		testCounter.reset();
+		System.out.println(testCounter.getTime(true));
+		assertEquals(testCounter.getSecond(),0);
+		assertEquals(testCounter.getMinute(),0);
+		assertEquals(testCounter.getHour(),0);
+	}
+	
+	//need a test for reset and one for convert time
 	
 }
