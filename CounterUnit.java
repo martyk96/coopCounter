@@ -6,27 +6,20 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runners.Parameterized.Parameters;
 
 
 public class CounterUnit {
-	Counter testCounter;
-	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
+	static Counter testCounter;
 
-	@AfterClass
-	public static void tearDownAfterClass() throws Exception {
-	}
-
-	@Before
+	@Parameters
 	public void setUp() throws Exception {
 		//this will test all possible values
 		for(short hour=0; hour < 24; hour++){
 			for(short min=0; min<60; min++){
 				for(short sec=0; sec<60; sec++){
 					testCounter = new Counter(sec, min, hour);
-					System.out.println(testCounter.getTime(true));
+					//System.out.println(testCounter.getTime(true));
 				}
 			}
 				
@@ -35,16 +28,10 @@ public class CounterUnit {
 
 	}
 
-	@After
-	public void tearDown() throws Exception {
-	}
-
-	
-	
 	@Test
 	public void secondShouldIncreaseOne(){
 		short secBefore, secAfter;
-		
+		System.out.println("pass");
 		secBefore = testCounter.getSecond();
 		testCounter.incSecond();
 		secAfter = testCounter.getSecond();
@@ -130,15 +117,22 @@ public class CounterUnit {
 		}
 	}
 	
+	//not working yet and not sure what I want to do yet
+	@Test
+	public void timeShouldBeStandard(){
+		String military = testCounter.getTime(true);
+		String standard = testCounter.getTime(false);
+		//System.out.println("Military: "+military+"\nStandard: "+standard);
+		
+	}
+	
 	@After
-	public void secMinHourShouldBeZero(){
+	public void secMinHourShouldBeZero(){		//seconds, minutes, and hours should be reset to 0
 		testCounter.reset();
-		System.out.println(testCounter.getTime(true));
+		//System.out.println(testCounter.getTime(true));
 		assertEquals(testCounter.getSecond(),0);
 		assertEquals(testCounter.getMinute(),0);
 		assertEquals(testCounter.getHour(),0);
 	}
-	
-	//need a test for reset and one for convert time
 	
 }
