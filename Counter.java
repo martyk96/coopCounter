@@ -133,9 +133,11 @@ public class Counter {
 		String strMin = Integer.toString(min);					//creates a string version of min
 		String strHour;											//declares a string version of hour
 		String strTime;											//declares for further use
+		standardHour = getHour(false);
 		
-
+		if(military)
 			strHour = Integer.toString(hour);					//if military, convert military hour to string
+		else
 			strHour = Integer.toString(standardHour);			//if standard, convert standard hour to string
 		
 		
@@ -165,6 +167,7 @@ public class Counter {
 		String strTime;								//declares strHour
 		 
 		strTime = formatTime(false);
+		System.out.println(strTime);
 		abbreviation = getAbbreviation();
 	
 		return(strTime+" "+abbreviation); 			//returns the time in hh:mm:ss format
