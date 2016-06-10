@@ -2,11 +2,7 @@ package coopCounter;
 import static org.junit.Assert.*;
 
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runners.Parameterized.Parameters;
 
 
 public class CounterUnit {
@@ -36,6 +32,7 @@ public class CounterUnit {
 			
 		
 	}
+	
 	@Test
 	public void secondShouldDecreaseOne(){			
 		short secBefore;
@@ -54,6 +51,7 @@ public class CounterUnit {
 				assertEquals(secAfter,59);			//if seconds is 0, seconds should roll back to 59				this.minuteShouldDecreaseOne();		//and decrease a minute	
 		}
 	}
+	
 	@Test
 	public void minuteShouldIncreaseOne(){
 		short minBefore, minAfter;
@@ -73,6 +71,7 @@ public class CounterUnit {
 			}
 		}
 	}
+	
 	@Test
 	public void minuteShouldDecreaseOne(){
 		short minBefore, minAfter;
@@ -92,6 +91,7 @@ public class CounterUnit {
 			}
 		}
 	}
+	
 	@Test
 	public void hourShouldIncreaseOne(){
 		short hourBefore, hourAfter;
@@ -99,43 +99,54 @@ public class CounterUnit {
 		for(int i=0; i<hourTestValues.length; i++){				
 			testCounter = new Counter(minSecTestValues[i], minSecTestValues[i], hourTestValues[i]);
 			//System.out.println(testCounter.getTime(true));
-			hourBefore = testCounter.getHour();
+			hourBefore = testCounter.getHour(true);
 			testCounter.incHour();
-			hourAfter = testCounter.getHour();
+			hourAfter = testCounter.getHour(true);
 			
 			if(hourBefore < 23)
 				assertEquals(hourBefore, hourAfter-1);	//hour before should equal hour after -1
 			else{
-				assertEquals(hourAfter,0);			//if hours is 23, hours should reset to 0 
+				assertEquals(hourAfter,0);				//if hours is 23, hours should reset to 0 
 			}
 		}
 	}
+	
 	@Test
-	public void hourShouldDecreaseOne(){
+	public void hourShouldDecreaseOne(){	
 		short hourBefore, hourAfter;
 		
 		for(int i=0; i<hourTestValues.length; i++){				
 			testCounter = new Counter(minSecTestValues[i], minSecTestValues[i], hourTestValues[i]);
 			//System.out.println(testCounter.getTime(true));
-			hourBefore = testCounter.getHour();		
+			hourBefore = testCounter.getHour(true);		
 			testCounter.decHour();
-			hourAfter = testCounter.getHour();
+			hourAfter = testCounter.getHour(true);
 			
 			if(hourBefore!=0)
 				assertEquals(hourBefore, hourAfter+1);	//hour before should equal hour after +1
 			else{
-				assertEquals(hourAfter, 23);		//if hours is 0, hours should roll back to 23
+				assertEquals(hourAfter, 23);			//if hours is 0, hours should roll back to 23
 			}	
 		}
 	}
 	
-	//not working yet and not sure what I want to do yet
 	@Test
 	public void timeShouldBeStandard(){
-		String military = testCounter.getTime(true);
-		String standard = testCounter.getTime(false);
-		//System.out.println("Military: "+military+"\nStandard: "+standard);
-		
+		short military, standard;
+		for(int i=0; i<hourTestValues.length; i++){				
+			testCounter = new Counter(minSecTestValues[i], minSecTestValues[i], hourTestValues[i]);
+			military = testCounter.getHour(true);
+			standard = testCounter.getHour(false);
+			
+			//System.out.println("Military: "+military+"\nStandard: "+standard);
+			
+			if(military>12)
+				assertEquals(military-12,standard);		//when military>12, standard = military-12
+			else if(military==0)
+				assertEquals(military,standard-12);			//when military=0, standard=12
+			else
+				assertEquals(military,standard);			//when military <=12, standard = military
+		}
 	}
 	
 	@After
@@ -144,7 +155,7 @@ public class CounterUnit {
 		//System.out.println(testCounter.getTime(true));
 		assertEquals(testCounter.getSecond(),0);
 		assertEquals(testCounter.getMinute(),0);
-		assertEquals(testCounter.getHour(),0);
+		assertEquals(testCounter.getHour(true),0);
 	}
 	
 }
