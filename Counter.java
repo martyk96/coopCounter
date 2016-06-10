@@ -1,15 +1,17 @@
 package coopCounter; 
 
 public class Counter {
-	private static short sec, min, hour;
+	private short sec, min, hour;
 	
 	//constructor for the counter class, takes the starting seconds, minutes, and hours as
 	//its initial conditions
-	public Counter(short startSec, short startMin, short startHour){
+	public Counter(short startSec, short startMin, short startHour){	//error stuff, custom errors
 		sec = startSec;
 		min = startMin;
 		hour = startHour;		
 	}
+	
+	//constructor for standard time
 	
 	//********************************************************************************
 	//The following methods are responsible for increasing and decreasing the counter
@@ -91,32 +93,35 @@ public class Counter {
 		 * getTime() will return the time in hh:mm:ss format and for standard time, have an attached
 		 * abbreviation (AM/PM)
 		*/
+		String strTime;
+		strTime = formatTime();				//stores the time in hh:mm:ss format
 		
+		if(!military)											//if standard time
+			strTime = convertTime();		//convert military time to standard
+		
+		return(strTime);										//will return the time in either standard or military time
+	}
+	private String formatTime(){
+		//the following is for formatting, if seconds, minutes, or hours are a single digit (less than 10)
+		//then place an extra zero in front of it
 		String strSec = Integer.toString(sec);					//creates a string version of sec
 		String strMin = Integer.toString(min);					//creates a string version of min
 		String strHour = Integer.toString(hour);				//creates a string version of hour
 		String strTime;											//declares for further use
 		
-		//the following is for formatting, if seconds, minutes, or hours are a single digit (less than 10)
-		//then place an extra zero in front of it
 		if(sec<10)
 			strSec = "0" + strSec;
 		if(min<10)
 			strMin = "0" + strMin;
 		if(hour<10)
 			strHour = "0"+ strHour;
+		strTime = strHour+":"+strMin+":"+strSec;
 		
-		strTime = strHour+":"+strMin+":"+strSec;				//stores the time in hh:mm:ss format
-		
-		if(!military)											//if standard time
-			strTime = convertTime(strSec, strMin, hour);		//convert military time to standard
-		
-		
-		return(strTime);										//will return the time in either standard or military time
+		return strTime;
 	}
 	
 	
-	private String convertTime(String strSec, String strMin, int hour){
+	private String convertTime(){
 		/* 
 		 * convertTime() is responsible for converting military time into standard time.
 		 * It will take military time, subtract 12 from it and add an abbreviation to it
@@ -126,9 +131,12 @@ public class Counter {
 		 */
 		
 		String abbreviation; 						//declares abbreviation
-		String strHour;								//declares strHour	
+		String strHour;								//declares strHour
+		String strSec = Integer.toString(sec);					//creates a string version of sec
+		String strMin = Integer.toString(min);					//creates a string version of min
 		int standardHour = hour;					//assigns the parsed hour to standardHour
 		
+		formatTime();
 		if(standardHour>12){
 			standardHour -= 12;						//will take military time and subtract 12 to convert to standard
 			abbreviation = "PM";					//if time is greater than 12, PM
